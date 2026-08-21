@@ -1,0 +1,26 @@
+bool isIsomorphic(char* s, char* t) {
+ #include <stdio.h>
+#include <string.h>
+#include <stdbool.h>
+    int lenS = strlen(s);
+    int lenT = strlen(t);
+    if (lenS != lenT) {
+        return false;
+    }
+    int mapS_to_T[256] = {0};
+    int mapT_to_S[256] = {0};   
+    for (int i = 0; i < lenS; i++) {
+        unsigned char charS = s[i];
+        unsigned char charT = t[i];
+        if (mapS_to_T[charS] != 0 && mapS_to_T[charS] != charT) {
+            return false;
+        }
+        if (mapT_to_S[charT] != 0 && mapT_to_S[charT] != charS) {
+            return false;
+        }
+        mapS_to_T[charS] = charT;
+        mapT_to_S[charT] = charS;
+    }   
+    return true;
+}
+   
