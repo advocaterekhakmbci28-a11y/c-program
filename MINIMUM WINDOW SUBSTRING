@@ -1,0 +1,46 @@
+char* minWindow(char* s, char* t) {
+#include <stdio.h>
+#include <string.h>
+#include <limits.h>
+if (!s || !t || *s == '\0' || *t == '\0') return "";
+    int target_counts[128] = {0};
+    int window_counts[128] = {0};
+    int unique_chars_needed = 0;
+    for (int i = 0; t[i] != '\0'; i++) {
+        if (target_counts[(unsigned char)t[i]] == 0) {
+            unique_chars_needed++;
+        }
+        target_counts[(unsigned char)t[i]]++;
+    }
+    int s_len = strlen(s);
+    int l = 0, r = 0;
+    int formed = 0;
+    int min_len = INT_MAX;
+    int start_idx = 0;
+    while (r < s_len) {
+        char r_char = s[r];
+        window_counts[(unsigned char)r_char]++;
+        if (target_counts[(unsigned char)r_char] > 0 && 
+            window_counts[(unsigned char)r_char] == target_counts[(unsigned char)r_char]) {
+            formed++;
+        }
+        while (l <= r && formed == unique_chars_needed) {
+            char l_char = s[l];
+            if (r - l + 1 < min_len) {
+                min_len = r - l + 1;
+                start_idx = l;
+            }
+            window_counts[(unsigned char)l_char]--;
+            if (target_counts[(unsigned char)l_char] > 0 && 
+                window_counts[(unsigned char)l_char] < target_counts[(unsigned char)l_char]) {
+                formed--;
+            }
+            l++;
+        }
+        r++;
+    }
+    if (min_len == INT_MAX) return "";
+    s[start_idx + min_len] = '\0'; 
+    return &s[start_idx];
+}
+   
