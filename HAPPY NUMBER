@@ -1,0 +1,21 @@
+bool isHappy(int n) {
+ #include <stdio.h>
+#include <stdbool.h>
+int getNextSum(int n) {
+    int totalSum = 0;
+    while (n > 0) {
+        int digit = n % 10; 
+        totalSum += digit * digit; 
+        n /= 10;            
+    }
+    return totalSum;
+}
+    int slow = n;
+    int fast = getNextSum(n);
+    while (fast != 1 && slow != fast) {
+        slow = getNextSum(slow);           
+        fast = getNextSum(getNextSum(fast)); 
+    }
+    return fast == 1;
+}
+   
