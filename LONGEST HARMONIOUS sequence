@@ -1,0 +1,38 @@
+#include <stdlib.h>
+
+// Comparison function for qsort
+int compare(const void* a, const void* b) {
+    int num1 = *(int*)a;
+    int num2 = *(int*)b;
+    if (num1 < num2) return -1;
+    if (num1 > num2) return 1;
+    return 0;
+}
+
+int findLHS(int* nums, int numsSize) {
+    if (numsSize == 0) return 0;
+
+    // Sort the array in ascending order
+    qsort(nums, numsSize, sizeof(int), compare);
+
+    int left = 0;
+    int max_length = 0;
+
+    // Sliding window with a right pointer
+    for (int right = 0; right < numsSize; right++) {
+        // Shrink the window from the left if the difference is strictly greater than 1
+        while (nums[right] - nums[left] > 1) {
+            left++;
+        }
+
+        // The condition is met ONLY if the difference is EXACTLY 1
+        if (nums[right] - nums[left] == 1) {
+            int current_length = right - left + 1;
+            if (current_length > max_length) {
+                max_length = current_length;
+            }
+        }
+    }
+
+    return max_length;
+}
