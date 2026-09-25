@@ -1,0 +1,27 @@
+#include <string.h>
+#include <stdbool.h>
+char* longestNiceSubstring(char* s) {
+    int n = strlen(s);
+    int max_len = 0;
+    int start_idx = 0;
+    for (int i = 0; i < n; i++) {
+        unsigned int lower_mask = 0;
+        unsigned int upper_mask = 0;
+ for (int j = i; j < n; j++) {
+            if (s[j] >= 'a' && s[j] <= 'z') {
+                lower_mask |= (1 << (s[j] - 'a'));
+            } else if (s[j] >= 'A' && s[j] <= 'Z') {
+                upper_mask |= (1 << (s[j] - 'A'));
+            }
+            if (lower_mask == upper_mask) {
+                int current_len = j - i + 1;
+                if (current_len > max_len) {
+                    max_len = current_len;
+                    start_idx = i;
+                }
+            }
+        }
+    }
+    s[start_idx + max_len] = '\0';
+    return &s[start_idx];
+}
