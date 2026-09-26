@@ -1,0 +1,27 @@
+#include <stdio.h>
+int longestAlternatingSubarray(int* nums, int numsSize, int threshold) 
+{
+    int max_len = 0;
+    int i = 0;
+    while (i < numsSize)
+     {
+        if (nums[i] % 2 == 0 && nums[i] <= threshold) 
+        {
+            int len = 1;
+            int j = i;
+            while (j + 1 < numsSize && nums[j + 1] <= threshold && (nums[j] % 2 != nums[j + 1] % 2))
+             {
+                len++;
+                j++;
+            }
+            if (len > max_len) 
+            {
+                max_len = len;
+            }
+            i = j + 1; 
+        } else {
+            i++;
+        }
+    }  
+    return max_len;
+}
